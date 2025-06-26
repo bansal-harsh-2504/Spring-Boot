@@ -1,6 +1,6 @@
-package net.engineeringdigest.journalApp.Controller;
+package net.harsh.journalApp.Controller;
 
-import net.engineeringdigest.journalApp.entity.JournalEntry;
+import net.harsh.journalApp.entity.JournalEntry;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/journal")
+@RequestMapping("/_journal")
 public class JournalEntryController {
     private final Map<Long, JournalEntry> journalEntries = new HashMap<>();
 
