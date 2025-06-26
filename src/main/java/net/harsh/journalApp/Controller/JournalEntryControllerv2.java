@@ -40,8 +40,8 @@ public class JournalEntryControllerv2 {
         }
     }
 
-    @GetMapping("/{journalId}")
-    public ResponseEntity<JournalEntryv2> getJournalById(@PathVariable ObjectId journalId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<JournalEntryv2> getJournalById(@PathVariable("id") ObjectId journalId) {
         Optional<JournalEntryv2> journalEntry = journalEntryService.findById(journalId);
 //        if (journalEntry.isPresent()) {
 //            return new ResponseEntity<>(journalEntry.get(), HttpStatus.OK);
@@ -52,8 +52,8 @@ public class JournalEntryControllerv2 {
         return journalEntry.map(entry -> new ResponseEntity<>(entry, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/{journalId}")
-    public ResponseEntity<JournalEntryv2> updateEntry(@PathVariable ObjectId journalId, @RequestBody JournalEntryv2 newEntry) {
+    @PutMapping("/{id}")
+    public ResponseEntity<JournalEntryv2> updateEntry(@PathVariable("id") ObjectId journalId, @RequestBody JournalEntryv2 newEntry) {
         Optional<JournalEntryv2> optional = journalEntryService.findById(journalId);
         if (!optional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -69,8 +69,8 @@ public class JournalEntryControllerv2 {
         return new ResponseEntity<>(journalEntry, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{journalId}")
-    public ResponseEntity<?> deleteJournalEntry(@PathVariable ObjectId journalId) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteJournalEntry(@PathVariable("id") ObjectId journalId) {
         if (!journalEntryService.findById(journalId).isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
