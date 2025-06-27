@@ -19,12 +19,12 @@ public class UserService {
 
     public List<UserDTO> getAllUserDTOs() {
         return userRepository.findAll().stream()
-                .map(user -> new UserDTO(user.getId(), user.getUsername(), user.getJournalEntries()))
+                .map(user -> new UserDTO(user.getId().toHexString(), user.getUsername()))
                 .collect(Collectors.toList());
     }
 
     public Optional<UserDTO> getUserDTO(ObjectId userId) {
-        return userRepository.findById(userId).map(user -> new UserDTO(user.getId(), user.getUsername(), user.getJournalEntries()));
+        return userRepository.findById(userId).map(user -> new UserDTO(user.getId().toHexString(), user.getUsername()));
     }
 
     public Optional<User> findById(ObjectId userId) {

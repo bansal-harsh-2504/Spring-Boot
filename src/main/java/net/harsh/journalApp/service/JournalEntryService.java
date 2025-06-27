@@ -19,15 +19,15 @@ public class JournalEntryService {
         journalEntryRepository.save(journalEntry);
     }
 
-    public List<JournalEntryv2> getAll() {
-        return journalEntryRepository.findAll();
-    }
-
     public Optional<JournalEntryv2> findById(ObjectId journalId) {
         return journalEntryRepository.findById(journalId);
     }
 
     public void deleteById(ObjectId journalId) {
         journalEntryRepository.deleteById(journalId);
+    }
+
+    public List<JournalEntryv2> getJournalsByUserId(ObjectId userId) {
+        return journalEntryRepository.findByUserId(userId);
     }
 }

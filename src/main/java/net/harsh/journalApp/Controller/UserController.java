@@ -2,7 +2,9 @@ package net.harsh.journalApp.Controller;
 
 import net.harsh.journalApp.dto.UpdateUserRequest;
 import net.harsh.journalApp.dto.UserDTO;
+import net.harsh.journalApp.entity.JournalEntryv2;
 import net.harsh.journalApp.entity.User;
+import net.harsh.journalApp.service.JournalEntryService;
 import net.harsh.journalApp.service.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +16,17 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JournalEntryService journalEntryService;
+
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getAll() {
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> users = userService.getAllUserDTOs();
         if (users.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -45,7 +50,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         userService.saveUser(user);
-        UserDTO userDTO = new UserDTO(user.getId(), user.getUsername(), user.getJournalEntries());
+        UserDTO userDTO = new UserDTO(user.getId().toHexString(), user.getUsername());
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
@@ -81,7 +86,7 @@ public class UserController {
         }
         userService.saveUser(existingUser);
 
-        UserDTO responseDto = new UserDTO(existingUser.getId(), existingUser.getUsername(), existingUser.getJournalEntries());
+        UserDTO responseDto = new UserDTO(existingUser.getId().toHexString(), existingUser.getUsername());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -93,5 +98,18 @@ public class UserController {
         }
         userService.deleteById(userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/{username}/journals")
+    public ResponseEntity<List<JournalEntryv2>> getAllJournalsByUsername(@PathVariable String username) {
+        Optional<User> optional = userService.findByUsername(username);
+        if (!optional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        List<JournalEntryv2> journalEntries = journalEntryService.getJournalsByUserId(optional.get().getId());
+        if (journalEntries != null && !journalEntries.isEmpty()) {
+            return new ResponseEntity<>(journalEntries, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

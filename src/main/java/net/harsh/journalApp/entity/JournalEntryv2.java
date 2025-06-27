@@ -5,6 +5,7 @@ import lombok.NonNull;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
 
@@ -17,4 +18,6 @@ public class JournalEntryv2 {
     private String title;
     private String content;
     private LocalDateTime date;
+    @Field("userId")
+    private ObjectId userId;
 }
