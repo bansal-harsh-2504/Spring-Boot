@@ -1,8 +1,8 @@
 package net.harsh.journalApp.Controller;
 
+import net.harsh.journalApp.dto.JournalDTO;
 import net.harsh.journalApp.dto.UpdateUserRequest;
 import net.harsh.journalApp.dto.UserDTO;
-import net.harsh.journalApp.entity.JournalEntryv2;
 import net.harsh.journalApp.entity.User;
 import net.harsh.journalApp.service.JournalEntryService;
 import net.harsh.journalApp.service.UserService;
@@ -91,7 +91,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable("id") ObjectId userId) {
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") ObjectId userId) {
         Optional<User> optional = userService.findById(userId);
         if (!optional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -101,12 +101,12 @@ public class UserController {
     }
 
     @GetMapping("/{username}/journals")
-    public ResponseEntity<List<JournalEntryv2>> getAllJournalsByUsername(@PathVariable String username) {
+    public ResponseEntity<List<JournalDTO>> getAllJournalsByUsername(@PathVariable String username) {
         Optional<User> optional = userService.findByUsername(username);
         if (!optional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        List<JournalEntryv2> journalEntries = journalEntryService.getJournalsByUserId(optional.get().getId());
+        List<JournalDTO> journalEntries = journalEntryService.getJournalsByUserId(optional.get().getId());
         if (journalEntries != null && !journalEntries.isEmpty()) {
             return new ResponseEntity<>(journalEntries, HttpStatus.OK);
         }

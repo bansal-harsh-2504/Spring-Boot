@@ -1,5 +1,6 @@
 package net.harsh.journalApp.service;
 
+import net.harsh.journalApp.dto.JournalDTO;
 import net.harsh.journalApp.entity.JournalEntryv2;
 import net.harsh.journalApp.repository.JournalEntryRepository;
 import org.bson.types.ObjectId;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class JournalEntryService {
@@ -27,7 +29,7 @@ public class JournalEntryService {
         journalEntryRepository.deleteById(journalId);
     }
 
-    public List<JournalEntryv2> getJournalsByUserId(ObjectId userId) {
-        return journalEntryRepository.findByUserId(userId);
+    public List<JournalDTO> getJournalsByUserId(ObjectId userId) {
+        return journalEntryRepository.findByUserId(userId).stream().map(entry -> new JournalDTO(entry.getId().toHexString(), entry.getUserId().toHexString(), entry.getTitle(), entry.getContent())).collect(Collectors.toList());
     }
 }
