@@ -3,8 +3,6 @@ package net.harsh.journalApp.Controller;
 import net.harsh.journalApp.dto.UpdateUserRequest;
 import net.harsh.journalApp.dto.UserDTO;
 import net.harsh.journalApp.entity.User;
-import net.harsh.journalApp.service.JournalEntryService;
-import net.harsh.journalApp.service.UserDetailsServiceImpl;
 import net.harsh.journalApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,12 +21,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private JournalEntryService journalEntryService;
-
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
